@@ -1,0 +1,83 @@
+<br>
+<div class="row">
+  <div class="col-md-4">
+    <button (click)="adicionar(modalTemplate, 'Adicionar Disciplina')">Novo</button>
+  </div>
+</div>
+<br>
+
+<ng-template #modalTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{titulo}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form" novalidate>
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+          <label>Nome: <span *ngIf="!form.get('nome').valid">*</span></label>
+          <input type="text" class="form-control" class="form-control" name="nome" value="{{obj.nome}}"
+            [(ngModel)]="obj.nome" id="nome" formControlName="nome" required maxlength="50">
+
+          <small class="form-text text-muted danger"
+            *ngIf="!form.get('nome').valid && (form.get('nome').dirty || form.get('nome').touched)">
+            Campo obrigatório.
+          </small>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-12">
+          <label>Curso: <span *ngIf="!form.get('cursoId').valid">*</span></label>
+          <select class="form-control" [(ngModel)]="obj.cursoId" name="cursoId"
+            formControlName="cursoId" id="cursoId" required>
+            <option *ngFor="let d of cursos | async" value={{d.id}}>{{d.nome}}</option>
+          </select>
+          <small class="form-text text-muted danger"
+            *ngIf="!form.get('cursoId').valid && (form.get('cursoId').dirty || form.get('cursoId').touched)">
+            Campo obrigatório.
+          </small>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-12">
+          <label>Professor: <span *ngIf="!form.get('professorId').valid">*</span></label>
+          <select class="form-control" [(ngModel)]="obj.professorId" name="professorId"
+            formControlName="professorId" id="professorId" required>
+            <option *ngFor="let d of professores | async" value={{d.id}}>{{d.nome}}</option>
+          </select>
+          <small class="form-text text-muted danger"
+            *ngIf="!form.get('professorId').valid && (form.get('professorId').dirty || form.get('professorId').touched)">
+            Campo obrigatório.
+          </small>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-skin" (click)="confirmar();">Confirmar </button>
+  </div>
+</ng-template>
+
+<swal #sucessoSwal title="Sucesso" text="Operação realizada com sucesso!" type="success" (confirm)="carregarPagina()">
+</swal>
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nome</th>
+      <th scope="col">Curso</th>
+      <th scope="col">Professor</th>
+      <th scope="col">Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of listagem | async">
+      <td>{{item.id}}</td>
+      <td>{{item.nome}}</td>
+      <td>{{item.curso.nome}}</td>
+      <td>{{item.professor.nome}}</td>
+      <td>
+        <button (click)="atualizar(item, modalTemplate, 'Editar Disciplina')">editar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

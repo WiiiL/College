@@ -1,0 +1,85 @@
+<br>
+<div class="row">
+  <div class="col-md-4">
+    <button (click)="adicionar(modalTemplate, 'Adicionar Aluno')">Novo</button>
+  </div>
+</div>
+<br>
+
+<ng-template #modalTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{titulo}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form" novalidate>
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+          <label>Nome: <span *ngIf="!form.get('nome').valid">*</span></label>
+          <input type="text" class="form-control" class="form-control" name="nome" value="{{obj.nome}}"
+            [(ngModel)]="obj.nome" id="nome" formControlName="nome" required
+            maxlength="50">
+
+          <small class="form-text text-muted danger"
+            *ngIf="!form.get('nome').valid && (form.get('nome').dirty || form.get('nome').touched)">
+            Campo obrigatório.
+          </small>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6">
+            <label>Data Nascimento: <span *ngIf="!form.get('dataNascimento').valid">*</span></label>
+            <input type="date" class="form-control" class="form-control" name="dataNascimento" value="{{obj.dataNascimento}}"
+              [(ngModel)]="obj.dataNascimento" id="dataNascimento" formControlName="dataNascimento" required>
+  
+            <small class="form-text text-muted danger"
+              *ngIf="!form.get('dataNascimento').valid && (form.get('dataNascimento').dirty || form.get('dataNascimento').touched)">
+              Campo obrigatório.
+            </small>
+          </div>
+          <div class="col-sm-6 col-md-6 col-lg-6">
+              <label>Matricula: <span *ngIf="!form.get('matricula').valid">*</span></label>
+              <input type="text" class="form-control" class="form-control" name="matricula" value="{{obj.matricula}}"
+                [(ngModel)]="obj.matricula" id="matricula" formControlName="matricula" required
+                maxlength="50">
+    
+              <small class="form-text text-muted danger"
+                *ngIf="!form.get('matricula').valid && (form.get('matricula').dirty || form.get('matricula').touched)">
+                Campo obrigatório.
+              </small>
+            </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-skin" (click)="confirmar();">Confirmar </button>
+  </div>
+</ng-template>
+
+<swal #sucessoSwal title="Sucesso" text="Operação realizada com sucesso!" type="success"
+    (confirm)="carregarPagina()">
+</swal>
+
+<table class="table">
+  <thead class="thead-dark">
+      <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nome</th>
+          <th scope="col">Data Nascimento</th>
+          <th scope="col">Matrícula</th>
+          <th scope="col">Ações</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor="let item of listagem | async">
+          <td>{{item.id}}</td>
+          <td>{{item.nome}}</td>
+          <td>{{item.dataNascimento | date:'dd/MM/yyyy' }}</td>
+          <td>{{item.matricula}}</td>
+          <td>
+            <button (click)="atualizar(item, modalTemplate, 'Editar Aluno')">editar</button>
+          </td>
+      </tr>
+  </tbody>
+</table>
+

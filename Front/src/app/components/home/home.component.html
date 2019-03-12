@@ -1,0 +1,40 @@
+<p>Relatório Curso</p>
+
+<div class="row">
+    <div class="card" style="width: 16rem;" *ngFor="let item of dashboard | async">
+        <div class="card-body">
+            <h5 class="card-title">{{item.nomeCurso}}</h5>
+            <p class="card-text">
+                Disciplinas: {{item.qtdDisciplinas}} <br />
+                Alunos: {{item.qtdAlunos}}<br />
+                Media Nota: {{item.mediaNota | number: '1.2-2'}}<br />
+            </p>
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+<p>Relatório Disciplina</p>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Curso - Disciplina</th>
+            <th scope="col">Professor</th>
+            <th scope="col">Alunos</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of disciplinas | async">
+            <td>{{item.curso.nome}} - {{item.nome}}</td>
+            <td>{{item.professor.nome}} - Salario: {{item.professor.salario}}</td>
+            <td>
+                <span *ngFor="let alunos of item.disciplinaAlunos">
+                    {{alunos.aluno.nome}} - Nota: {{alunos.nota}}
+                    <br />
+                </span>
+            </td>
+        </tr>
+    </tbody>
+</table>
